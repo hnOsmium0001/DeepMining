@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package io.github.hnosmium0001.deepmining.vein
 
 import io.github.hnosmium0001.deepmining.util.pack
@@ -8,7 +10,14 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.util.Constants
 import kotlin.math.sqrt
 
-class MineralVein(val center: BlockPos, val density: Float, val radius: Int, val composition: MineralComposition) {
+class MineralVein(
+        val center: BlockPos,
+        val density: Float,
+        val radius: Int,
+        val composition: MineralComposition,
+        var remaining: Int
+) {
+    val isDepleted get() = remaining >= 0
 
     fun densityAt(pos: BlockPos): Double {
         val xd = center.x - pos.x
@@ -20,7 +29,6 @@ class MineralVein(val center: BlockPos, val density: Float, val radius: Int, val
 
     fun fade(dist: Double): Double {
         // TODO better distance function
-        @Suppress("NAME_SHADOWING")
         val dist = dist.coerceIn(0.5, radius.toDouble())
         return (density * 256) / (dist * dist)
     }
@@ -39,7 +47,8 @@ class MineralVein(val center: BlockPos, val density: Float, val radius: Int, val
             val density = tag.getFloat("Density")
             val radius = tag.getInt("Radius")
             val composition = MineralComposition.read(tag.getCompound("Composition"))
-            return MineralVein(center, density, radius, composition)
+            val remaining = tag.getInt("Remaining")
+            return MineralVein(center, density, radius, composition, remaining)
         }
     }
 }
