@@ -17,7 +17,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'kotlin'
 
 version = "${mod_version}"
-group = 'io.github.hnosmium0001.deepmining'
+group = 'io.github.hnosmium0001.deep_mining'
 archivesBaseName = "${mod_name}"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -35,7 +35,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                deepmining {
+                deep_mining {
                     source sourceSets.main
                 }
             }
@@ -48,7 +48,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                deepmining {
+                deep_mining {
                     source sourceSets.main
                 }
             }
@@ -60,10 +60,10 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'deepmining', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'deep_mining', '--all', '--output', file('src/generated/resources/')
 
             mods {
-                deepmining {
+                deep_mining {
                     source sourceSets.main
                 }
             }

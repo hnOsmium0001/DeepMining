@@ -1,42 +1,35 @@
 @file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 
-package io.github.hnosmium0001.deepmining
+package io.github.hnosmium0001.deep_mining
 
-import io.github.hnosmium0001.deepmining.drill.FluidDrillBlock
-import io.github.hnosmium0001.deepmining.drill.FluidDrillTileEntity
-import io.github.hnosmium0001.deepmining.drill.MineralDrillBlock
-import io.github.hnosmium0001.deepmining.drill.MineralDrillTileEntity
-import io.github.hnosmium0001.deepmining.util.toBlockItem
-import io.github.hnosmium0001.deepmining.util.unwrap
-import io.github.hnosmium0001.deepmining.vein.CapabilityEventHandler
-import net.alexwells.kottle.FMLKotlinModLoadingContext
+import io.github.hnosmium0001.deep_mining.drill.FluidDrillBlock
+import io.github.hnosmium0001.deep_mining.drill.FluidDrillTileEntity
+import io.github.hnosmium0001.deep_mining.drill.MineralDrillBlock
+import io.github.hnosmium0001.deep_mining.drill.MineralDrillTileEntity
+import io.github.hnosmium0001.deep_mining.util.toBlockItem
+import io.github.hnosmium0001.deep_mining.util.unwrap
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntityType
 import net.minecraftforge.fml.RegistryObject
-import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
 import java.util.function.Supplier
 
-@Mod(DeepMining.MODID)
-object DeepMining {
-    const val MODID = "deepmining"
-
-    init {
-        val bus = FMLKotlinModLoadingContext.get().modEventBus
-        bus.register(CapabilityEventHandler)
-        blockReg.register(bus)
-        tileReg.register(bus)
-        itemReg.register(bus)
-    }
+val itemGroup = object : ItemGroup(DeepMining.MODID) {
+    override fun createIcon() = ItemStack(mineralDrillItem.unwrap()!!)
 }
 
-val blockReg = DeferredRegister<Block>(ForgeRegistries.BLOCKS, DeepMining.MODID)
-val tileReg = DeferredRegister<TileEntityType<*>>(ForgeRegistries.TILE_ENTITIES, DeepMining.MODID)
-val itemReg = DeferredRegister<Item>(ForgeRegistries.ITEMS, DeepMining.MODID)
+fun itemProps(): Item.Properties = Item.Properties()
+        .group(itemGroup)
+
+val blockReg = DeferredRegister(ForgeRegistries.BLOCKS, DeepMining.MODID)
+val tileReg = DeferredRegister(ForgeRegistries.TILE_ENTITIES, DeepMining.MODID)
+val itemReg = DeferredRegister(ForgeRegistries.ITEMS, DeepMining.MODID)
 
 val mineralDrillBlock: RegistryObject<MineralDrillBlock> =
         blockReg.register("mineral_drill") {

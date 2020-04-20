@@ -1,4 +1,4 @@
-package io.github.hnosmium0001.deepmining.drill
+package io.github.hnosmium0001.deep_mining.drill
 
 class Modules {
     var speed = 0

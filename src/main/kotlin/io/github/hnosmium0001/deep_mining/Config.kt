@@ -1,4 +1,4 @@
-package io.github.hnosmium0001.deepmining
+package io.github.hnosmium0001.deep_mining
 
 import java.util.function.Supplier
 

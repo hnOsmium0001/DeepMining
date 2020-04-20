@@ -1,4 +1,4 @@
-package io.github.hnosmium0001.deepmining.util
+package io.github.hnosmium0001.deep_mining.util
 
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.ListNBT

@@ -1,9 +1,9 @@
-package io.github.hnosmium0001.deepmining.vein
+package io.github.hnosmium0001.deep_mining.vein
 
-import io.github.hnosmium0001.deepmining.DeepMining
-import io.github.hnosmium0001.deepmining.util.pack
-import io.github.hnosmium0001.deepmining.util.unpack
-import io.github.hnosmium0001.deepmining.util.unpackUse
+import io.github.hnosmium0001.deep_mining.DeepMining
+import io.github.hnosmium0001.deep_mining.util.pack
+import io.github.hnosmium0001.deep_mining.util.unpack
+import io.github.hnosmium0001.deep_mining.util.unpackUse
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.INBT
 import net.minecraft.util.Direction
@@ -18,6 +18,7 @@ import net.minecraftforge.common.util.Constants
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.event.AttachCapabilitiesEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 
 abstract class Vein<T> {
     val chunks: MutableMap<ChunkPos, MutableList<T>> = HashMap()
@@ -74,10 +75,17 @@ fun registerFluid() {
     }, ::FluidVeins)
 }
 
-
 object CapabilityEventHandler {
+    @JvmStatic
     @SubscribeEvent
-    fun attachCaps(event: AttachCapabilitiesEvent<World>) {
+    fun onCommonSetup(event: FMLCommonSetupEvent) {
+        registerMineral()
+        registerFluid()
+    }
+
+    @JvmStatic
+    @SubscribeEvent
+    fun onAttachCaps(event: AttachCapabilitiesEvent<World>) {
         event.addCapability(ResourceLocation(DeepMining.MODID, "veins"), object : ICapabilityProvider {
             val mineralVeins = LazyOptional.of { MineralVeins() }
             val fluidVeins = LazyOptional.of { FluidVeins() }

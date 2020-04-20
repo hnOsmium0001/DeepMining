@@ -1,4 +1,4 @@
-package io.github.hnosmium0001.deepmining.vein
+package io.github.hnosmium0001.deep_mining.vein
 
 import net.minecraft.nbt.CompoundNBT
 import net.minecraftforge.fluids.FluidStack

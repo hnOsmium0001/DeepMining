@@ -2,7 +2,7 @@ modLoader="kotlinfml"
 loaderVersion="[1,)"
 
 [[mods]]
-    modId="deepmining"
+    modId="deep_mining"
     version="${file.jarVersion}"
     displayName="Deep Mining"
     displayURL="https://github.com/hnOsmium0001/DeepMining"
@@ -12,16 +12,16 @@ loaderVersion="[1,)"
     Customizable, factorio style mining system
     '''
 
-[[dependencies.deepmining]]
+[[dependencies.deep_mining]]
     modId="forge"
     mandatory=true
     versionRange="[28,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.deepmining]]
+[[dependencies.deep_mining]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.14.4]"
+    versionRange="[1.15.2]"
     ordering="NONE"
     side="BOTH"

@@ -1,10 +1,10 @@
-package io.github.hnosmium0001.deepmining.drill
+package io.github.hnosmium0001.deep_mining.drill
 
-import io.github.hnosmium0001.deepmining.CommonConfig
-import io.github.hnosmium0001.deepmining.mineralDrillTileEntity
-import io.github.hnosmium0001.deepmining.util.unwrap
-import io.github.hnosmium0001.deepmining.vein.CAPABILITY_MINERAL_VEINS
-import io.github.hnosmium0001.deepmining.vein.MineralVein
+import io.github.hnosmium0001.deep_mining.CommonConfig
+import io.github.hnosmium0001.deep_mining.mineralDrillTileEntity
+import io.github.hnosmium0001.deep_mining.util.unwrap
+import io.github.hnosmium0001.deep_mining.vein.CAPABILITY_MINERAL_VEINS
+import io.github.hnosmium0001.deep_mining.vein.MineralVein
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.state.StateContainer

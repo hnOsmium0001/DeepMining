@@ -1,7 +1,7 @@
-package io.github.hnosmium0001.deepmining.drill
+package io.github.hnosmium0001.deep_mining.drill
 
-import io.github.hnosmium0001.deepmining.fluidDrillTileEntity
-import io.github.hnosmium0001.deepmining.util.unwrap
+import io.github.hnosmium0001.deep_mining.fluidDrillTileEntity
+import io.github.hnosmium0001.deep_mining.util.unwrap
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.state.StateContainer

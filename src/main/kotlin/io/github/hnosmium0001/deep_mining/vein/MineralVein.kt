@@ -1,8 +1,8 @@
 @file:Suppress("NAME_SHADOWING")
 
-package io.github.hnosmium0001.deepmining.vein
+package io.github.hnosmium0001.deep_mining.vein
 
-import io.github.hnosmium0001.deepmining.util.pack
+import io.github.hnosmium0001.deep_mining.util.pack
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.NBTUtil
