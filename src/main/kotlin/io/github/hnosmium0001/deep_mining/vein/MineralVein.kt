@@ -11,11 +11,11 @@ import net.minecraftforge.common.util.Constants
 import kotlin.math.sqrt
 
 class MineralVein(
-        val center: BlockPos,
-        val density: Float,
-        val radius: Int,
-        val composition: MineralComposition,
-        var remaining: Int
+    val center: BlockPos,
+    val density: Float,
+    val radius: Int,
+    val composition: MineralComposition,
+    var remaining: Int
 ) {
     val isDepleted get() = remaining >= 0
 
@@ -33,27 +33,27 @@ class MineralVein(
         return (density * 256) / (dist * dist)
     }
 
-    fun write(tag: CompoundNBT = CompoundNBT()): CompoundNBT {
-        tag.put("Center", NBTUtil.writeBlockPos(center))
-        tag.putFloat("Density", density)
-        tag.putInt("Radius", radius)
-        tag.put("Composition", composition.write())
-        return tag
-    }
-
-    companion object {
-        fun read(tag: CompoundNBT): MineralVein {
-            val center = NBTUtil.readBlockPos(tag.getCompound("Center"))
-            val density = tag.getFloat("Density")
-            val radius = tag.getInt("Radius")
-            val composition = MineralComposition.read(tag.getCompound("Composition"))
-            val remaining = tag.getInt("Remaining")
-            return MineralVein(center, density, radius, composition, remaining)
-        }
-    }
+    companion object
 }
 
-data class MineralComposition(val minerals: Array<Mineral>) {
+fun MineralVein.write(tag: CompoundNBT = CompoundNBT()): CompoundNBT {
+    tag.put("Center", NBTUtil.writeBlockPos(center))
+    tag.putFloat("Density", density)
+    tag.putInt("Radius", radius)
+    tag.put("Composition", composition.write())
+    return tag
+}
+
+fun MineralVein.Companion.read(tag: CompoundNBT): MineralVein {
+    val center = NBTUtil.readBlockPos(tag.getCompound("Center"))
+    val density = tag.getFloat("Density")
+    val radius = tag.getInt("Radius")
+    val composition = MineralComposition.read(tag.getCompound("Composition"))
+    val remaining = tag.getInt("Remaining")
+    return MineralVein(center, density, radius, composition, remaining)
+}
+
+class MineralComposition(val minerals: Array<Mineral>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -69,29 +69,28 @@ data class MineralComposition(val minerals: Array<Mineral>) {
         return minerals.contentHashCode()
     }
 
-    fun write(tag: CompoundNBT = CompoundNBT()): CompoundNBT {
-        tag.put("Minerals", pack(minerals) { m -> m.write() })
-        return tag
-    }
+    companion object
+}
 
-    companion object {
-        fun read(tag: CompoundNBT): MineralComposition {
-            val nbtMinerals = tag.getList("Minerals", Constants.NBT.TAG_COMPOUND)
-            val minerals = Array(nbtMinerals.size) {
-                val nbtMineral = nbtMinerals.getCompound(it)
-                val item = ItemStack.read(nbtMineral.getCompound("Item"))
-                val weight = tag.getFloat("Weight")
-                Mineral(item, weight)
-            }
-            return MineralComposition(minerals)
+fun MineralComposition.write(tag: CompoundNBT = CompoundNBT()): CompoundNBT {
+    tag.put("Minerals", minerals.pack { mineral ->
+        CompoundNBT().apply {
+            put("Item", mineral.item.write(CompoundNBT()))
+            putFloat("Weight", mineral.weight)
         }
-    }
+    })
+    return tag
 }
 
-data class Mineral(val item: ItemStack, val weight: Float) {
-    fun write(tag: CompoundNBT = CompoundNBT()): CompoundNBT {
-        tag.put("Item", item.write(CompoundNBT()))
-        tag.putFloat("Weight", weight)
-        return tag
+fun MineralComposition.Companion.read(tag: CompoundNBT): MineralComposition {
+    val nbtMinerals = tag.getList("Minerals", Constants.NBT.TAG_COMPOUND)
+    val minerals = Array(nbtMinerals.size) {
+        val nbtMineral = nbtMinerals.getCompound(it)
+        val item = ItemStack.read(nbtMineral.getCompound("Item"))
+        val weight = tag.getFloat("Weight")
+        Mineral(item, weight)
     }
+    return MineralComposition(minerals)
 }
+
+data class Mineral(val item: ItemStack, val weight: Float)

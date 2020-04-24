@@ -1,7 +1,18 @@
 package io.github.hnosmium0001.deep_mining
 
-import java.util.function.Supplier
+import net.minecraftforge.common.ForgeConfigSpec
 
 object CommonConfig {
-    val mineralDrillPerformance = Supplier { 2 } // TODO
+    private val builder = ForgeConfigSpec.Builder()
+
+    val mineralDrillPerformance = builder
+        .define("mineralDrillPerformance", 1)
+
+    val spec = builder.build()
+}
+
+object ClientConfig {
+    private val builder = ForgeConfigSpec.Builder()
+
+    val spec = builder.build()
 }

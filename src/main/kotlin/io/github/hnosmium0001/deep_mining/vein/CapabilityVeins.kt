@@ -2,8 +2,8 @@ package io.github.hnosmium0001.deep_mining.vein
 
 import io.github.hnosmium0001.deep_mining.DeepMining
 import io.github.hnosmium0001.deep_mining.util.pack
+import io.github.hnosmium0001.deep_mining.util.packEntry
 import io.github.hnosmium0001.deep_mining.util.unpack
-import io.github.hnosmium0001.deep_mining.util.unpackUse
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.nbt.INBT
 import net.minecraft.util.Direction
@@ -37,19 +37,24 @@ fun registerMineral() {
             }
 
             instance.chunks.clear()
-            nbt.getList("Chunks", Constants.NBT.TAG_COMPOUND).unpackUse {
-                val pos = ChunkPos(getLong("Pos"))
-                val veins = getList("Veins", Constants.NBT.TAG_COMPOUND).unpack(ArrayList()) { MineralVein.read(this) } as MutableList
-                instance.chunks.put(pos, veins)
+            nbt.apply {
+                for (compound in getList("Chunks", Constants.NBT.TAG_COMPOUND)) {
+                    compound as CompoundNBT
+                    val pos = ChunkPos(compound.getLong("Pos"))
+                    val veins = compound.getList("Veins", Constants.NBT.TAG_COMPOUND).unpack(ArrayList()) { mineral: CompoundNBT ->
+                        MineralVein.read(mineral)
+                    }
+                    instance.chunks[pos] = veins
+                }
             }
         }
 
         override fun writeNBT(capability: Capability<MineralVeins>, instance: MineralVeins, side: Direction?): INBT? {
             return CompoundNBT().apply {
-                put("Chunks", pack(instance.chunks.entries) { entry ->
+                put("Chunks", instance.chunks.packEntry { pos, vein ->
                     CompoundNBT().apply {
-                        putLong("Pos", entry.key.asLong())
-                        put("Veins", pack(entry.value) { m -> m.write() })
+                        putLong("Pos", pos.asLong())
+                        put("Veins", vein.pack { m -> m.write() })
                     }
                 })
             }
@@ -92,11 +97,11 @@ object CapabilityEventHandler {
 
             @Suppress("DUPLICATE_LABEL_IN_WHEN") // Actual values are injected during runtime
             override fun <T : Any?> getCapability(cap: Capability<T>, side: Direction?): LazyOptional<T> =
-                    when (cap) {
-                        CAPABILITY_MINERAL_VEINS -> mineralVeins.cast()
-                        CAPABILITY_FLUID_VEINS -> fluidVeins.cast()
-                        else -> LazyOptional.empty()
-                    }
+                when (cap) {
+                    CAPABILITY_MINERAL_VEINS -> mineralVeins.cast()
+                    CAPABILITY_FLUID_VEINS -> fluidVeins.cast()
+                    else -> LazyOptional.empty()
+                }
         })
     }
 }
