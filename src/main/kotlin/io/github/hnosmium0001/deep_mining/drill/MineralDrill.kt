@@ -1,18 +1,20 @@
 package io.github.hnosmium0001.deep_mining.drill
 
 import io.github.hnosmium0001.deep_mining.CommonConfig
+import io.github.hnosmium0001.deep_mining.library.multiblock.*
 import io.github.hnosmium0001.deep_mining.mineralDrillTileEntity
 import io.github.hnosmium0001.deep_mining.util.unwrap
 import io.github.hnosmium0001.deep_mining.vein.CAPABILITY_MINERAL_VEINS
 import io.github.hnosmium0001.deep_mining.vein.MineralVein
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
 import net.minecraft.state.StateContainer
 import net.minecraft.state.properties.BlockStateProperties
 import net.minecraft.tileentity.ITickableTileEntity
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.Direction
 import net.minecraft.util.math.ChunkPos
+import net.minecraft.util.math.Vec3i
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.items.CapabilityItemHandler
@@ -24,7 +26,15 @@ class MineralDrillBlock(props: Properties) : Block(props) {
     }
 }
 
-class MineralDrillTileEntity : TileEntity(mineralDrillTileEntity.unwrap()!!), ITickableTileEntity {
+// TODO
+val mineralDrillMultiblock = MultiBlockType.fromPairs(
+    Vec3i(0, 0, 0) to ListedBlockMatcher(Blocks.IRON_BLOCK.defaultState)
+)
+
+class MineralDrillTileEntity :
+    MultiBlockController(mineralDrillTileEntity.unwrap()!!, mineralDrillMultiblock),
+    ITickableTileEntity {
+
     private var needsReload = true
 
     private var targetVein: MineralVein? = null
